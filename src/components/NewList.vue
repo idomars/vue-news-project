@@ -26,8 +26,10 @@
 </template>
 <script>
 import {
-    baseUrl
+    baseUrl,
+    bus
 } from '../utils.js'
+import { mapState, mapActions, mapGetters } from 'vuex'
 export default {
     data() {
             return {
@@ -56,6 +58,7 @@ export default {
                     this.cateoryId = newVal;
                 }
                 this.queryNews();
+              
             }
         },
         methods: {
@@ -67,14 +70,24 @@ export default {
                     if (res.status == 200) {
                         this.newsList = res.data.data;
                         if(this.pageNo == 1){
-                        	bus.$emit('pageTotal',res.data.pageCount)
+                        	 this.initPageTotal({
+                              pageTotal: res.data.pageCount
+                             })
                         }
                     }
                 }, (res) => {
                     console.log(res);
                 });
-            }
-        }
+            },
+             ...mapActions([
+                  'initPageTotal'
+            ])
+        },
+        computed:
+             mapState({
+                 aaa: state => state.aaa
+            })
+        
 
 }
 </script>

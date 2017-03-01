@@ -59,14 +59,17 @@
         </div>
     </div>
 </template>
+
 <script>
 import {
     baseUrl,
     getScrollTop,
     getScrollHeight,
-    getWindowHeight
+    getWindowHeight,
+    bus
 } from '../utils.js'
 import News from './NewList.vue'
+import { mapState, mapActions, mapGetters } from 'vuex'
 export default {
     data() {
             return {
@@ -80,7 +83,7 @@ export default {
                 selectCateId: 0,
                 pageNo: 1,
                 pageSize: 10,
-                pageTotal:0
+               
             }
         },
         components: {
@@ -92,8 +95,7 @@ export default {
                 this.pageInit();
                 bus.$on('pageTotal',(val)=>{
                     this.pageTotal = val;
-                    console(his.pageTotal);
-                })
+                });
                 window.addEventListener('scroll', this.handleScroll);
             }.bind(this));
         },
@@ -125,9 +127,13 @@ export default {
             handleScroll() {
               　if(getScrollTop() + getWindowHeight() == getScrollHeight()){
 　　　　            this.pageNo++
+                    alert(this.pageTotal);
 　　　　        }
                
             }
+        },
+        computed: {
+           
         }
 
 

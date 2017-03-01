@@ -5,6 +5,8 @@ import App from './App'
 import router from './router/route.config.js'
 import axios from 'axios'
 import {baseUrl} from './utils.js'
+import store from './store'
+
 
 
 //设置axios, 与vue-reasource 用法一致
@@ -19,6 +21,7 @@ import './assets/css/index.css'
 
 new Vue({
   el: '#app',
+  store,
   router,
   render:h=>h(App)
 })

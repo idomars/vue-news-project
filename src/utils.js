@@ -1,3 +1,4 @@
+import Vue from 'vue'
 export const baseUrl = "proxy"
 export const bus = new Vue();
 
