@@ -8,8 +8,8 @@ const state = {
 }
 
 export default{
-	state,
+	state/*,
     actions: NewsAction,
     getters: newGetters,
-    mutations: NewsMutAtion
+    mutations: NewsMutAtion*/
 }

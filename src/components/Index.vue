@@ -1,7 +1,7 @@
 <template>
     <div>
         <header>
-            <h1>新闻</h1>
+            <h1>新闻 {{pageTotal}}</h1>
             <div class="icon_order" @click="isChange=!isChange"></div>
             <div class="icon_search" onclick="javascript:location.href='indexSearch.html';"></div>
             <div class="icon_cate" @click="isChange=!isChange"></div>
@@ -55,11 +55,11 @@
         </div>
         <div id="bottomNavbar" data-am-widget="navbar" class="am-navbar am-cf am-navbar-default hbt hborder-color">
             <ul class="am-navbar-nav am-cf am-avg-sm-4" id="menu-list">
+
             </ul>
         </div>
     </div>
 </template>
-
 <script>
 import {
     baseUrl,
@@ -69,7 +69,12 @@ import {
     bus
 } from '../utils.js'
 import News from './NewList.vue'
-import { mapState, mapActions, mapGetters } from 'vuex'
+import {
+    mapState,
+    mapActions,
+    mapGetters
+} from 'vuex'
+
 export default {
     data() {
             return {
@@ -82,8 +87,9 @@ export default {
                 showCate: false,
                 selectCateId: 0,
                 pageNo: 1,
-                pageSize: 10,
-               
+                pageSize: 10
+
+
             }
         },
         components: {
@@ -93,7 +99,7 @@ export default {
             this.$nextTick(function() {
                 this.selectCateId = 2
                 this.pageInit();
-                bus.$on('pageTotal',(val)=>{
+                bus.$on('pageTotal', (val) => {
                     this.pageTotal = val;
                 });
                 window.addEventListener('scroll', this.handleScroll);
@@ -110,34 +116,41 @@ export default {
                         this.cateList = res.data.data;
                     }
                 }, (res) => {
-                    console.log(res);
+                    //
                 });
             },
             reloadNews(e, id, index) {
                 this.selectCateId = id;
+                this.pageNo = 1;
                 var target = e.target;
                 let len = 52 * (index);
                 if (target.nodeName == 'SPAN') {
                     this.showCate = false;
                     document.getElementById('cateBox').scrollLeft = len;
                 }
-
-
             },
-            handleScroll() {
-              　if(getScrollTop() + getWindowHeight() == getScrollHeight()){
-　　　　            this.pageNo++
-                    alert(this.pageTotal);
-　　　　        }
-               
+            handleScroll() {　
+                let pageTotal = this.$store.state.pageTotal;
+                if (getScrollTop() >= getScrollHeight() - getWindowHeight()) {　　　　
+                    if (pageTotal > this.pageNo) {
+                        this.pageNo++
+                    } else {
+                        alert(pageTotal);
+                    }　　　　
+                }
+
             }
         },
-        computed: {
-           
-        }
+        computed: mapState({
+            // 箭头函数可以让代码非常简洁
+            pageTotal: state => {
+
+                return state.pageTotal;
+            }
+        })
+
 
 
 
 }
-
 </script>

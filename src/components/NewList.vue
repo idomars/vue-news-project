@@ -34,7 +34,8 @@ export default {
     data() {
             return {
                 newsList: [],
-                cateoryId: 0
+                cateoryId: 0,
+                callNum: 0
             }
         },
         props: {
@@ -57,36 +58,42 @@ export default {
                 } else {
                     this.cateoryId = newVal;
                 }
+                this.newsList = [];
                 this.queryNews();
-              
+            },
+            'pageNo':function(newVal, oldVal){
+            	console.log(this.pageNo);
+            	this.queryNews();
             }
         },
         methods: {
             queryNews() {
+            	console.log(this.callNum++);
                 let url = baseUrl + "/api/news/listByCid/" + this.cateoryId + "/" + this.pageNo + "/" + this.pageSize;
-                console.log(url);
+              
                 this.$http(url).then((res) => {
-                    console.log(res)
+                    
                     if (res.status == 200) {
-                        this.newsList = res.data.data;
+                        this.newsList = this.newsList.concat(res.data.data);
                         if(this.pageNo == 1){
-                        	 this.initPageTotal({
-                              pageTotal: res.data.pageCount
-                             })
+                        	this.initPageTotal({
+                                pageTotal: res.data.pageCount
+                            })
                         }
                     }
                 }, (res) => {
-                    console.log(res);
+                   
                 });
             },
              ...mapActions([
                   'initPageTotal'
             ])
         },
-        computed:
-             mapState({
-                 aaa: state => state.aaa
-            })
+        computed:{
+
+
+        }
+          
         
 
 }
